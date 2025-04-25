@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'dart:async';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: ApiMock());
+  }
+}
+
+class ApiMock extends StatefulWidget {
+  @override
+  _ApiMockState createState() => _ApiMockState();
+}
+
+class _ApiMockState extends State<ApiMock> {
+  Map<String, String>? _data;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _mockFetch();
+  }
+
+  Future<void> _mockFetch() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      _data = {
+        'title': 'Mock API Title',
+        'body': 'This is a simulated API response body.'
+      };
+      _loading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Mock API Fetch")),
+      body: Center(
+        child: _loading
+            ? CircularProgressIndicator()
+            : Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  "${_data!['title']}\n\n${_data!['body']}",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+      ),
+    );
+  }
+}

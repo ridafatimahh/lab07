@@ -1,0 +1,54 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: TimerPage(),
+    );
+  }
+}
+
+class TimerPage extends StatefulWidget {
+  @override
+  _TimerPageState createState() => _TimerPageState();
+}
+
+class _TimerPageState extends State<TimerPage> {
+  int _secondsLeft = 10;
+  bool _isRunning = false;
+
+  void _startTimer() async {
+    if (_isRunning) return;
+    setState(() => _isRunning = true);
+
+    for (int i = _secondsLeft; i > 0; i--) {
+      await Future.delayed(Duration(seconds: 1));
+      setState(() => _secondsLeft--);
+    }
+
+    setState(() => _isRunning = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Timer App")),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("$_secondsLeft", style: TextStyle(fontSize: 50)),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _startTimer,
+              child: Text("Start Timer"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

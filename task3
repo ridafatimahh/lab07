@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(LocalDbApp());
+
+class LocalDbApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: LocalDataPage());
+  }
+}
+
+class LocalDataPage extends StatefulWidget {
+  @override
+  _LocalDataPageState createState() => _LocalDataPageState();
+}
+
+class _LocalDataPageState extends State<LocalDataPage> {
+  List<String>? _items;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLocalData();
+  }
+
+  Future<void> _fetchLocalData() async {
+    await Future.delayed(Duration(seconds: 2)); // Simulate DB delay
+    setState(() {
+      _items = ['Apple', 'Banana', 'Orange', 'Mango'];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Local Data")),
+      body: Center(
+        child: _items == null
+            ? CircularProgressIndicator()
+            : ListView.builder(
+                itemCount: _items!.length,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text(_items![index]),
+                ),
+              ),
+      ),
+    );
+  }
+}
+
